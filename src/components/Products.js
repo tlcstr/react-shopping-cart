@@ -5,7 +5,7 @@ import { fetchProducts } from '../actions/productActions';
 
 Modal.setAppElement('#root');
 
-export class Products extends Component {
+class Products extends Component {
   constructor(props) {
     super(props);
     this.state = { showModal: false, product: null };
@@ -113,6 +113,6 @@ export class Products extends Component {
   }
 }
 
-export default connect(state => ({ products: state.products.items }), {
+export default connect(state => ({ products: state.products.filteredItems }), {
   fetchProducts,
 })(Products);
