@@ -2,10 +2,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const shortid = require('shortid');
-const { default: Products } = require('./src/components/Products');
 
 const app = express();
-app.use(bodyParser);
+app.use(bodyParser.json());
 
 mongoose.connect('mongodb://localhost/react-shopping-cart-db', {
   useNewUrlParser: true,
@@ -26,7 +25,7 @@ const Product = mongoose.model(
 );
 
 app.get('/api/products', async (req, res) => {
-  const products = await Products.find({});
+  const products = await Product.find({});
   res.send(products);
 });
 
