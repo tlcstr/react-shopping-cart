@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import Animation from 'react-reveal/Fade';
+import { connect } from 'react-redux';
+import { removeFromCart } from '../actions/cartActions';
 
-export default class Cart extends Component {
+class Cart extends Component {
   constructor(props) {
     super(props);
     this.state = { showCheckout: false, name: '', email: '', address: '' };
@@ -127,3 +129,10 @@ export default class Cart extends Component {
     );
   }
 }
+
+export default connect(
+  state => ({
+    cartItems: state.cart.cartItems,
+  }),
+  { removeFromCart }
+)(Cart);
