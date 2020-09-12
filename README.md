@@ -1,1 +1,1 @@
-Responsive shopping cart, using React and MongoDB.
+Responsive shopping cart using React and MongoDB.
