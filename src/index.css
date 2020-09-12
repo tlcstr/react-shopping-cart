@@ -220,3 +220,30 @@ input {
   margin: 1rem;
   padding-left: 2rem;
 }
+
+/* order detaild */
+.order-details {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+.order-details li {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.order-details li div {
+  padding: 10px;
+}
+.order-details li:nth-child(6) div div:first-child {
+  padding-top: 1px;
+}
+.order-details .items {
+  text-align: right;
+  padding: 0;
+}
+.success-message {
+  color: green;
+}
