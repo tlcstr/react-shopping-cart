@@ -11,17 +11,16 @@ class App extends React.Component {
       <Provider store={store}>
         <div className="grid-container">
           <header>
-            <a href="/">React Shopping Cart</a>
+            <a href="/">OLYMPIYKI</a>
           </header>
           <main>
             <div className="content">
               <div className="main">
                 <Filter></Filter>
+                <hr className="separator"/>
                 <Products />
               </div>
-              <div className="sidebar">
-                <Cart />
-              </div>
+              <Cart />
             </div>
           </main>
           <footer>All rights are reserved</footer>

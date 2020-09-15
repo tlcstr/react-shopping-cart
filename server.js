@@ -16,11 +16,12 @@ const Product = mongoose.model(
   'products',
   new mongoose.Schema({
     _id: { type: String, default: shortid.generate },
+    image: String,
+    brand: String,
     title: String,
     description: String,
-    image: String,
-    price: Number,
     availableSizes: [String],
+    price: Number,
   })
 );
 

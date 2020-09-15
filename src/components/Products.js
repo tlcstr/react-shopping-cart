@@ -27,34 +27,41 @@ class Products extends Component {
   render() {
     const { product } = this.state;
     return (
-      <div>
+      <React.Fragment>
         {!this.props.products ? (
           <div>Loading...</div>
         ) : (
-          <ul className="products">
+          <div className="products">
             {this.props.products.map(product => (
-              <li key={product._id}>
-                <div className="product">
+              <div className="product-container">
+                <div
+                  className={`product ${!this.state.showModal ? 'above' : ''}`}
+                  key={product._id}
+                >
                   <a
                     href={'#' + product._id}
                     onClick={() => this.openModal(product)}
                   >
                     <img src={product.image} alt={product.title}></img>
+                    <div className="price">${product.price}</div>
                     <p>{product.title}</p>
                   </a>
-                  <div className="product-price">
-                    <div>{product.price}</div>
+                  <div className="hide">
+                    <div className="sizes">
+                      Sizes: {product.availableSizes.map(x => x + ' ')}
+                    </div>
+
                     <button
-                      className="button primary"
+                      className="button"
                       onClick={() => this.props.addToCart(product)}
                     >
                       Add To Cart
                     </button>
                   </div>
                 </div>
-              </li>
+              </div>
             ))}
-          </ul>
+          </div>
         )}
         {this.state.showModal && (
           <Modal
@@ -70,7 +77,7 @@ class Products extends Component {
                 top: '50%',
                 left: '50%',
                 transform: 'translateY(-50%) translateX(-50%)',
-                width: '800px',
+                width: '60%',
                 height: 'min-content',
               },
             }}
@@ -85,15 +92,12 @@ class Products extends Component {
                 <p>
                   Available sizes:{' '}
                   {product.availableSizes.map(size => (
-                    <span>
-                      {' '}
-                      <button className="button">{size}</button>
-                    </span>
+                    <span>{size}</span>
                   ))}
                 </p>
                 <div className="price-add-to-cart">
                   <div className="product-price">
-                    <div>{product.price}</div>
+                    <div>${product.price}</div>
                   </div>
                   <button
                     className="button primary"
@@ -109,7 +113,7 @@ class Products extends Component {
             </div>
           </Modal>
         )}
-      </div>
+      </React.Fragment>
     );
   }
 }

@@ -8,7 +8,13 @@ import { createOrder, clearOrder } from '../actions/orderActions';
 class Cart extends Component {
   constructor(props) {
     super(props);
-    this.state = { showCheckout: false, name: '', email: '', address: '' };
+    this.state = {
+      showCheckout: false,
+      showCart: false,
+      name: '',
+      email: '',
+      address: '',
+    };
   }
 
   handleInput = e => {
@@ -31,18 +37,24 @@ class Cart extends Component {
     this.props.clearOrder();
   };
 
+  closeCart = () => {
+    this.setState({ showCart: false });
+  };
+
   render() {
     const { cartItems, order } = this.props;
-    const count = cartItems.length;
+    // const count = cartItems.reduce((a, b) => a + b.count, 0);
     return (
-      <div>
-        {count === 0 ? (
-          <div className="cart cart-header">Cart is empty</div>
-        ) : (
-          <div className="cart cart-header">
-            You have {count} {count > 1 ? 'items' : 'item'} in the cart
-          </div>
-        )}
+      <React.Fragment>
+        <div className="cart-icon">
+          <i
+            onClick={() => {
+              this.setState({ showCart: true });
+            }}
+            className="fas fa-shopping-cart fa-3x"
+          ></i>
+        </div>
+
         {order && (
           <Modal
             isOpen={true}
@@ -100,96 +112,115 @@ class Cart extends Component {
             </div>
           </Modal>
         )}
-        <div>
-          <div className="cart">
-            <ul className="cart-items">
-              {cartItems.map(item => (
-                <li key={item._id}>
-                  <div>
-                    <img src={item.image} alt={item.title}></img>
-                  </div>
-                  <div>
-                    <div>{item.title}</div>
-                    <div className="right">
-                      ${item.price} x {item.count}{' '}
-                      <button
-                        className="button"
-                        onClick={() => this.props.removeFromCart(item)}
-                      >
-                        Remove
-                      </button>
+        <Modal
+          isOpen={this.state.showCart}
+          onRequestClose={this.closeCart}
+          shouldCloseOnOverlayClick={true}
+          style={{
+            overlay: {
+              backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            },
+            content: {
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translateY(-50%) translateX(-50%)',
+              width: '800px',
+              height: 'min-content',
+            },
+          }}
+        >
+          <div>
+            <div className="cart">
+              <ul className="cart-items">
+                {cartItems.map(item => (
+                  <li key={item._id}>
+                    <div>
+                      <img src={item.image} alt={item.title}></img>
                     </div>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
-          {cartItems.length !== 0 && (
-            <div>
-              <div className="cart">
-                <div className="total">
-                  <div>
-                    Total: $
-                    {cartItems
-                      .reduce((a, b) => a + b.price * b.count, 0)
-                      .toFixed(2)}
-                  </div>
-                  <button
-                    onClick={() => {
-                      this.setState({ showCheckout: true });
-                    }}
-                    className="button primary"
-                  >
-                    Proceed
-                  </button>
-                </div>
-              </div>
-              {this.state.showCheckout && (
-                <Animation right duration={300}>
-                  <div className="cart">
-                    <form onSubmit={this.createOrder}>
-                      <ul className="form-container">
-                        <li>
-                          <label>Email</label>
-                          <input
-                            name="email"
-                            type="email"
-                            required
-                            onChange={this.handleInput}
-                          ></input>
-                        </li>
-                        <li>
-                          <label>Name</label>
-                          <input
-                            name="name"
-                            type="text"
-                            required
-                            onChange={this.handleInput}
-                          ></input>
-                        </li>
-                        <li>
-                          <label>Address</label>
-                          <input
-                            name="address"
-                            type="text"
-                            required
-                            onChange={this.handleInput}
-                          ></input>
-                        </li>
-                        <li>
-                          <button className="button primary" type="submit">
-                            Checkout
-                          </button>
-                        </li>
-                      </ul>
-                    </form>
-                  </div>
-                </Animation>
-              )}
+                    <div>
+                      <div>{item.title}</div>
+                      <div className="right">
+                        ${item.price} x {item.count}{' '}
+                        <button
+                          className="button"
+                          onClick={() => this.props.removeFromCart(item)}
+                        >
+                          Remove
+                        </button>
+                      </div>
+                    </div>
+                  </li>
+                ))}
+              </ul>
             </div>
-          )}
-        </div>
-      </div>
+            {cartItems.length !== 0 && (
+              <div>
+                <div className="cart">
+                  <div className="total">
+                    <div>
+                      Total: $
+                      {cartItems
+                        .reduce((a, b) => a + b.price * b.count, 0)
+                        .toFixed(2)}
+                    </div>
+                    <button
+                      onClick={() => {
+                        this.setState({ showCheckout: true });
+                      }}
+                      className="button primary"
+                    >
+                      Proceed
+                    </button>
+                  </div>
+                </div>
+                {this.state.showCheckout && (
+                  <Animation right duration={300}>
+                    <div className="cart">
+                      <form onSubmit={this.createOrder}>
+                        <ul className="form-container">
+                          <li>
+                            <label>Email</label>
+                            <input
+                              name="email"
+                              type="email"
+                              required
+                              onChange={this.handleInput}
+                            ></input>
+                          </li>
+                          <li>
+                            <label>Name</label>
+                            <input
+                              name="name"
+                              type="text"
+                              required
+                              onChange={this.handleInput}
+                            ></input>
+                          </li>
+                          <li>
+                            <label>Address</label>
+                            <input
+                              name="address"
+                              type="text"
+                              required
+                              onChange={this.handleInput}
+                            ></input>
+                          </li>
+                          <li>
+                            <button className="button primary" type="submit">
+                              Checkout
+                            </button>
+                          </li>
+                        </ul>
+                      </form>
+                    </div>
+                  </Animation>
+                )}
+              </div>
+            )}
+          </div>
+        </Modal>
+      </React.Fragment>
     );
   }
 }
